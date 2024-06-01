@@ -16,7 +16,11 @@
 
 <div id="filter" class="filter-container">
   <div id="upload">
-    <a href="{{ url_for('main.newPhoto') }}">Upload a photo</a>
+    {% if session.username %}
+      <a href="{{ url_for('main.newPhoto') }}">Upload a photo</a>
+    {% else %}
+      <a href="{{ url_for('auth.login') }}">Login to upload a photo</a>
+    {% endif %}
   </div>
 </div>
 
@@ -47,17 +51,19 @@
                     </div>
                 </a>
 
+                {% if session.username == photo.name or session.role == 'admin' %}
                 <a href="{{ url_for('main.editPhoto', photo_id=photo.id) }}" title="Edit this photo">
                     <div class="icon-container highlight green">
                         <img src="{{ url_for('static', filename='icons/edit.png') }}" alt="edit">
                     </div>
                 </a>
 
-               <a href="{{ url_for('main.deletePhoto', photo_id=photo.id) }}" title="Delete this photo">
-                  <div class="icon-container highlight red delete">
-                      <img src="{{ url_for('static', filename='icons/delete.png') }}" title="Delete this photo" alt="delete">
-                  </div>
-              </a>
+                <a href="{{ url_for('main.deletePhoto', photo_id=photo.id) }}" title="Delete this photo">
+                    <div class="icon-container highlight red delete">
+                        <img src="{{ url_for('static', filename='icons/delete.png') }}" title="Delete this photo" alt="delete">
+                    </div>
+                </a>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -65,4 +71,3 @@
 </div>
 
 {% endblock content %}
-~                          
