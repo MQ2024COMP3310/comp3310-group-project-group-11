@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, send_from_directory, current_app, session
-from .models import Photo, User
+from flask import Blueprint, render_template, request, flash, redirect, url_for, send_from_directory, current_app, session, Flask, request, jsonify, g
+from .models import Photo, User, Comment
 from sqlalchemy import asc, text
 from . import db
 import os
@@ -53,6 +53,7 @@ def newPhoto():
         newPhoto = Photo(name=session['username'],
                          caption=request.form['caption'],
                          description=request.form['description'],
+                         keywords=request.form['keywords'],
                          file=file.filename)
         db.session.add(newPhoto)
         flash('New Photo %s Successfully Created' % newPhoto.name)
@@ -74,6 +75,7 @@ def editPhoto(photo_id):
             editedPhoto.name = request.form['user']
             editedPhoto.caption = request.form['caption']
             editedPhoto.description = request.form['description']
+            editedPhoto.keywords = request.form['keywords']
             db.session.add(editedPhoto)
             db.session.commit()
             flash('Photo Successfully Edited %s' % editedPhoto.name)
@@ -93,3 +95,38 @@ def deletePhoto(photo_id):
 
     flash('Photo id %s Successfully Deleted' % photo_id)
     return redirect(url_for('main.homepage'))
+
+
+@main.route('/photo/<int:photo_id>', methods = ['GET'])
+def photo_page(photo_id):
+    photo = db.session.query(Photo).get(photo_id)
+    if not photo:
+        flash('Photo not found.', 'error')
+        return redirect(url_for('main.homepage'))
+    return render_template('photo_page.html', photo=photo)
+
+@main.route('/photo/<int:photo_id>/comments', methods=['POST'])
+@login_required
+def add_comment(photo_id):
+    data = request.get_json()
+    comment_text = data.get('comment_text')
+    user_id = session['user_id']
+
+    comment = Comment(photo_id=photo_id, user_id=user_id, comment_text=comment_text)
+    db.session.add(comment)
+    db.session.commit()
+    return jsonify({'message': 'Comment added successfully'}), 201
+
+
+@main.route('/search', methods=['GET'])
+def search_photos():
+    keyword = request.args.get('keyword')
+    photos = Photo.query.filter(Photo.metadata.contains(keyword)).all()
+    return jsonify([{
+        'id': photo.id,
+        'url': photo.url,
+        'metadata': photo.metadata
+    } for photo in photos])
+
+if __name__ == '__main__':
+    main.run(debug=True)

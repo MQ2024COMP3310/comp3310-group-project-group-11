@@ -37,7 +37,7 @@ def populate_db():
     session.add(photo)
     session.commit()
 
-    photo = Photo(name = 'Damian Ochrymowicz', caption = 'Nazare, Portugal', file = 'damian-ochrymowicz-GZQ7tKmEd9c.jpg') 
+    photo = Photo(name = 'Damian Ochrymowicz', caption = 'Nazare, Portugal', file = 'damian-ochrymowicz-GZQ7tKmEd9c.jpg', keywords = 'sea, mountain, waves')
     session.add(photo)
     session.commit()
 

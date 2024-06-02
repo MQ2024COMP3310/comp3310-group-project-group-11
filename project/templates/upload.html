@@ -40,6 +40,15 @@ Upload a photo
             required></textarea>
     </div>
 
+    <div class="input-container">
+        <label for="keywords">Keywords</label>
+        <textarea id="keywords" name="keywords" 
+            placeholder="Keywords"
+            rows=6 cols=25
+            title="Provide some keywords for your image"
+            required></textarea>
+    </div>
+
     <div class="input-container button green">
         <input type="submit" value="Upload">
         <a href="{{ url_for('main.homepage') }}">Cancel</a>

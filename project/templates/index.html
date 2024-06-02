@@ -24,8 +24,17 @@
   </div>
 </div>
 
+<div id="search">
+    <form action="{{ url_for('main.search_photos') }}" method="get">
+        <input type="text" name="q" placeholder="Search photos..." required>
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+
 <div id="images" class="images-container" data-pagetype="{{ pagetype }}">
     {% for photo in photos %}
+    
     <div class="image-box" data-id="{{photo.id}}">
         <img class="image" src="{{ url_for('main.display_file', name=photo.file) }}" alt="image">
         <div class="image-overlay-container">
@@ -37,8 +46,10 @@
                     <div class="image-caption overflow-ellipsis" title="{{photo.caption}}">
                         {{photo.caption}}
                     </div>
+                    <a href="{{ url_for('main.photo_page', photo_id=photo.id) }}">
+                        <button>Details</button>
+                      </a>
                 </div>
-
                 <div class="image-description overflow-ellipsis" title="{{photo.description}}">
                     {{photo.description}}
                 </div>
@@ -49,6 +60,9 @@
                     <div class="icon-container highlight blue">
                         <img src="{{ url_for('static', filename='icons/download.png') }}" alt="download">
                     </div>
+                    <a href="{{ url_for('main.photo_page', photo_id=photo.id) }}">
+                        <button>View/Add Comments</button>
+                      </a>
                 </a>
 
                 {% if session.username == photo.name or session.role == 'admin' %}
@@ -65,9 +79,31 @@
                 </a>
                 {% endif %}
             </div>
+
+            </div>
+
         </div>
-    </div>
     {% endfor %}
 </div>
 
+<script>
+    document.getElementById('search-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const keyword = document.getElementById('keyword').value;
+        const response = await fetch(`/search?keyword=${keyword}`);
+        const photos = await response.json();
+        const results = document.getElementById('search-results');
+        results.style.display = 'block';
+        results.innerHTML = photos.map(photo => `
+            <div class="image-box" data-id="${photo.id}">
+                <img class="image" src="${photo.url}" alt="image">
+                <div class="image-info-container">
+                    <div class="image-meta">
+                        <div class="image-owner">${photo.metadata}</div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    });
+    </script>
 {% endblock content %}
