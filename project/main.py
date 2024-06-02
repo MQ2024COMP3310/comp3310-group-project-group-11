@@ -1,3 +1,4 @@
+# Modules updated for task 7 and 9 - Harris Barker and Alex He
 from flask import Blueprint, render_template, request, flash, redirect, url_for, send_from_directory, current_app, session, Flask, request, jsonify, g
 from .models import Photo, User, Comment
 from sqlalchemy import asc, text
@@ -6,6 +7,7 @@ import os
 
 main = Blueprint('main', __name__)
 
+# Home page call rendering, fetching all images, added for task 7 - Harris Barker
 def login_required(f):
     def wrap(*args, **kwargs):
         if 'user_id' not in session:
@@ -64,13 +66,13 @@ def newPhoto():
 
 @main.route('/photo/<int:photo_id>/edit/', methods=['GET', 'POST'])
 @login_required
-def editPhoto(photo_id):
+def editPhoto(photo_id): # Updated for task 7 - Harris Barker
     editedPhoto = db.session.query(Photo).filter_by(id=photo_id).one()
     if session['username'] != editedPhoto.name and session['role'] != 'admin':
         flash('You do not have permission to edit this photo.', 'danger')
         return redirect(url_for('main.homepage'))
 
-    if request.method == 'POST':
+    if request.method == 'POST': # Added for task 7 - Harris Barker
         if request.form['user']:
             editedPhoto.name = request.form['user']
             editedPhoto.caption = request.form['caption']
@@ -85,7 +87,7 @@ def editPhoto(photo_id):
 
 @main.route('/photo/<int:photo_id>/delete/', methods=['GET', 'POST'])
 @login_required
-def deletePhoto(photo_id):
+def deletePhoto(photo_id): # Updated for task 7 - Harris Barker
     fileResults = db.session.execute(text('select file from photo where id = ' + str(photo_id)))
     filename = fileResults.first()[0]
     filepath = os.path.join(current_app.config["UPLOAD_DIR"], filename)

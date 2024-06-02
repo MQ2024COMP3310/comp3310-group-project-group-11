@@ -13,8 +13,8 @@
 {% endblock heading %}
 
 {% block content %}
-
-<div id="filter" class="filter-container">
+<!--Updated for task 7 - Harris Barker-->
+<div id="filter" class="filter-container"> 
   <div id="upload">
     {% if session.username %}
       <a href="{{ url_for('main.newPhoto') }}">Upload a photo</a>
@@ -64,7 +64,7 @@
                         <button>View/Add Comments</button>
                       </a>
                 </a>
-
+                <!--Updated for task 7 - Harris Barker-->
                 {% if session.username == photo.name or session.role == 'admin' %}
                 <a href="{{ url_for('main.editPhoto', photo_id=photo.id) }}" title="Edit this photo">
                     <div class="icon-container highlight green">

@@ -1,3 +1,4 @@
+# Auth.py created for implementation of authentication, task 7 - Harris Barker
 from flask import Blueprint, render_template, url_for, flash, redirect, request, session
 from .models import db, User
 from . import bcrypt

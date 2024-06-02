@@ -40,6 +40,7 @@ class Comment(db.Model):
             'comment_text': self.comment_text,
             'timestamp': self.timestamp,
         }
+# Added for task 7, user class - Harris Barker
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
