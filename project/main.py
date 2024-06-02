@@ -105,6 +105,7 @@ def photo_page(photo_id):
         return redirect(url_for('main.homepage'))
     return render_template('photo_page.html', photo=photo)
 
+#Task 9 - Alex
 @main.route('/photo/<int:photo_id>/comments', methods=['POST'])
 @login_required
 def add_comment(photo_id):
@@ -118,7 +119,7 @@ def add_comment(photo_id):
     db.session.commit()
     return jsonify({'message': 'Comment added successfully'}), 201
 
-
+#Task 9 - Alex
 @main.route('/search', methods=['GET'])
 def search_photos():
     keyword = request.args.get('keyword')

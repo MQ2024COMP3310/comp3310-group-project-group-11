@@ -7,6 +7,7 @@ class Photo(db.Model):
     caption = db.Column(db.String(250), nullable=False)
     file = db.Column(db.String(250), nullable=False)
     description = db.Column(db.String(600), nullable=True)
+    #Adding keywords Task 9 Alex
     keywords = db.Column(db.String(200), nullable=True)
 
     @property
@@ -21,6 +22,7 @@ class Photo(db.Model):
            'keywords': self.keywords
        }
 
+#Task 9 Alex - Comment to be stored in db
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     photo_id = db.Column(db.Integer, db.ForeignKey('photo.id'), nullable=False)

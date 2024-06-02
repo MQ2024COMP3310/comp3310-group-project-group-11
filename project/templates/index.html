@@ -34,7 +34,7 @@
 
 <div id="images" class="images-container" data-pagetype="{{ pagetype }}">
     {% for photo in photos %}
-    
+    <!-- Task 9 - Alex: Various changes, namely adding buttons to go to new photo_page and search function here-->
     <div class="image-box" data-id="{{photo.id}}">
         <img class="image" src="{{ url_for('main.display_file', name=photo.file) }}" alt="image">
         <div class="image-overlay-container">

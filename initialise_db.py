@@ -36,7 +36,7 @@ def populate_db():
     photo = Photo(name = 'Ekaterina Bogdan', caption = 'Bologna', description = 'A bike parked next to a pole.', file = 'ekaterina-bogdan-BKJWsGB5h1s.jpg') 
     session.add(photo)
     session.commit()
-
+    #adding keywords for task 9 - alex
     photo = Photo(name = 'Damian Ochrymowicz', caption = 'Nazare, Portugal', file = 'damian-ochrymowicz-GZQ7tKmEd9c.jpg', keywords = 'sea, mountain, waves')
     session.add(photo)
     session.commit()
