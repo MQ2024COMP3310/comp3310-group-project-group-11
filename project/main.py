@@ -112,8 +112,9 @@ def add_comment(photo_id):
     comment_text = data.get('comment_text')
     user_id = session['user_id']
 
-    comment = Comment(photo_id=photo_id, user_id=user_id, comment_text=comment_text)
-    db.session.add(comment)
+    # Using parameterized query to prevent SQL injection    SQLAlchemy text function specifies placeholders for values to be inserted
+    stmt = text("INSERT INTO comment (photo_id, user_id, comment_text) VALUES (:photo_id, :user_id, :comment_text)")
+    db.session.execute(stmt, {"photo_id": photo_id, "user_id": user_id, "comment_text": comment_text})
     db.session.commit()
     return jsonify({'message': 'Comment added successfully'}), 201
 
@@ -121,7 +122,10 @@ def add_comment(photo_id):
 @main.route('/search', methods=['GET'])
 def search_photos():
     keyword = request.args.get('keyword')
+
+       # Using SQLAlchemy's parameterized queries to prevent SQL injection
     photos = Photo.query.filter(Photo.metadata.contains(keyword)).all()
+
     return jsonify([{
         'id': photo.id,
         'url': photo.url,
